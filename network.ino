@@ -1,13 +1,12 @@
-const char* ssid = "ESP32_AP";      // Network SSID
+const char* ssid = "HYDRO_AUTO";      // Network SSID
 const char* password = "12345678"; 
 
 void handleJSONRequest() {
-  // Create a sample JSON object
-  String json;
-  serializeJson(doc, json);
 
-  // Send JSON response
-  server.send(200, "application/json", json);
+  String json;
+  serializeJson(status, json);
+
+  server.send(200, "application/json", json);  
 }
 
 void setupWifiAP(){  
@@ -17,20 +16,19 @@ void setupWifiAP(){
   Serial.println(ssid);
   Serial.print("IP Address: ");
   Serial.println(WiFi.softAPIP()); // Print the IP address of the AP
+  
   // Define the JSON endpoint
   server.on("/data", handleJSONRequest);
   // Start the server
   server.begin();
   Serial.println("Server Started");
 
-}
+  status["Temp"] = 30;
+  status["EC"] = 2.2;
+  status["PH"] = 1.1;
+  status["Watt"] = 400;
 
 
-
-String sendJson(){
-  String val;
-  serializeJson(doc, val);
-  return val;
 }
 
 

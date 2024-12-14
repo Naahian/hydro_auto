@@ -22,7 +22,8 @@
 #define ADC_RESOLUTION 4095 
 const char* filePath = "/data.json";
 // Servo myServo;
-JsonDocument doc;
+JsonDocument config;
+JsonDocument status;
 WebServer server(80);
 
 
@@ -31,25 +32,27 @@ float Temp = 0;
 
 void setup() {
     // myServo.attach(SERVO_PIN); // Attach the servo object to the defined pin
-
   setupHardware();  
   setupConfig();
   setupWifiAP();  
-
-  setupTDS();
+  
+  printConfig();
   delay(2000);
 }
 
 void loop() {
   // read sensors
-  readTemp();
+  // readTemp();
 
   // take action
-  
   server.handleClient();
  
   //log data
-  printJson();
+  status["Watt"] = random(300);
+  status["PH"] = random(14);
+  status["EC"] = random(10);
+  status["Temp"] = random(50);
+
   delay(500);
 }
 
@@ -68,34 +71,6 @@ void setupHardware() {
 
 //---------------- others functions ----------------------
 
-// void senseWithServo(){
-//   for (int angle = 0; angle <= 180; angle += 1) {
-//     myServo.write(angle); // Set the servo to the current angle
-//     Serial.print("Servo Angle: ");
-//     Serial.println(angle);
-//     delay(15); // Wait 15 ms to allow the servo to reach the angle
-//   }
-
-//   delay(1000); // Wait 1 second
-
-//   // Sweep the servo from 180° to 0°
-//   for (int angle = 180; angle >= 0; angle -= 1) {
-//     myServo.write(angle); // Set the servo to the current angle
-//     Serial.print("Servo Angle: ");
-//     Serial.println(angle);
-//     delay(15); // Wait 15 ms to allow the servo to reach the angle
-//   }
-// }
-
-
-void updateLedStatus(){
-  JsonObject obj = doc.as<JsonObject>();  
-  digitalWrite(configStatusLed,obj["configured"]); 
-  digitalWrite(dosingLed, obj["startDosing"]);
-}
-
-
-
 
 void fromInput(){
     if(Serial.available()){
@@ -105,7 +80,7 @@ void fromInput(){
     if(input == "DELETE FILE") deleteFile(SPIFFS, filePath);
     else{
       deserializeJson(inputDoc, input);
-      updateJson(inputDoc);
+      updateConfig(inputDoc);
     }
   } 
 

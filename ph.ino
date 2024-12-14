@@ -11,7 +11,7 @@ void readPH() {
   phVoltage = rawValue * (VREF / ADC_RESOLUTION);
   pH = 7.0 + ((PH_NEUTRAL_VOLTAGE - phVoltage) / PH_SCALE); // Calculate pH
 
-  doc["ph"] = pH;
+  // doc["ph"] = pH;
 }
  
 

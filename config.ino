@@ -1,25 +1,22 @@
 void setupConfig(){
   SPIFFS.begin(true);
-  
-  deleteFile(SPIFFS, filePath);
-  listDir(SPIFFS, "/",1);
-  delay(2000);
   checkConfig();
+  delay(2000);
 }
 
-void createJson(){
-  doc["name"] = "Hydroponic IOT";
-  doc["version"] = "1.0.0";
-  doc["configured"] = false;
-  doc["type"] = "leafy";  //leafy, fruit, vegitable
-  doc["state"] = "initial"; //initial, growth
-  doc["temp"] = 25.0;
-  doc["tds"] = 0.0;
-  doc["ph"] = 0.0;
-  doc["startDosing"] = false;
+void createConfig(){
+  config["name"] = "Hydroponic IOT";
+  config["version"] = "1.0.0";
+  config["configured"] = false;
+  config["type"] = "leafy";  //leafy, fruit, vegitable
+  config["state"] = "initial"; //initial, growth
+  config["temp"] = 25.0;
+  config["tds"] = 0.0;
+  config["ph"] = 0.0;
+  config["startDosing"] = false;
 
   String json;
-  serializeJson(doc, json);
+  serializeJson(config, json);
   writeFile(SPIFFS, filePath, json.c_str());
 }
 
@@ -29,32 +26,32 @@ void checkConfig(){
   String data = readFile(SPIFFS, filePath);
   if(!SPIFFS.exists(filePath) || data == ""){
     Serial.println("Config File not found!");
-    createJson();
+    createConfig();
   }
   else if(data != ""){
     Serial.println("Config Data Found...");
     String value = data;
-    deserializeJson(doc, value);
+    deserializeJson(config, value);
   }  
 
-  if(doc["configured"]) Serial.println("System Configured...");
+  if(config["configured"]) Serial.println("System Configured...");
   else Serial.println("System Not Configured!");
 }
 
-void updateJson(JsonDocument data){
+void updateConfig(JsonDocument data){
   JsonObject obj = data.as<JsonObject>();
   
   for(JsonPair itr: obj){
-    doc[itr.key()] = itr.value();
+    config[itr.key()] = itr.value();
   }   
   String json;
-  serializeJson(doc, json); 
+  serializeJson(config, json); 
   writeFile(SPIFFS, filePath, json.c_str()); 
 }
 
-void printJson(){
+void printConfig(){
   String json;
-  serializeJsonPretty(doc, json);
+  serializeJsonPretty(config, json);
   Serial.println(json.c_str());
   
 }

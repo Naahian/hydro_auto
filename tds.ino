@@ -39,8 +39,8 @@ void readTDS(){
       
       //convert voltage value to tds value
       tdsValue=(133.42*compensationVoltage*compensationVoltage*compensationVoltage - 255.86*compensationVoltage*compensationVoltage + 857.39*compensationVoltage)*0.5;
-      doc["temp"] = 25.0;
-      doc["tds"] = tdsValue;
+      
+      // doc["tds"] = tdsValue;
       
   
     }
