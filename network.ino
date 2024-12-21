@@ -32,16 +32,28 @@ void setupWifiAP(){
 }
 
 
-// void setupWifiSTA(char* ssid, char* password){
-//   WiFi.begin(ssid, password);
+void setupWifiSTA(char* ssid, char* password){
+  WiFi.begin(ssid, password);
 
-//   while(WiFi.status() != WL_CONNECTED){
-//     delay(1000);
-//     Serial.print(".");
-//   }
+  while(WiFi.status() != WL_CONNECTED){
+    delay(1000);
+    Serial.print(".");
+  }
 
-//   Serial.println();
-//   Serial.println("WiFi connected..!");
-//   Serial.print("Local IP: ");  Serial.println(WiFi.localIP());
-//   //TODO: handle error for disconnection, invalid ssid, invalid pass
-// }
+  Serial.println();
+  Serial.println("WiFi connected..!");
+  Serial.print("Local IP: ");  Serial.println(WiFi.localIP());
+  //TODO: handle error for disconnection, invalid ssid, invalid pass
+
+  // Define the JSON endpoint
+  server.on("/data", handleJSONRequest);
+  // Start the server
+  server.begin();
+  Serial.println("Server Started");
+
+  status["Temp"] = 30;
+  status["EC"] = 2.2;
+  status["PH"] = 1.1;
+  status["Watt"] = 400;
+
+}

@@ -9,7 +9,8 @@ void setupTemp()
 void readTemp(){ 
   tempSensor.requestTemperatures();
   Temp =  tempSensor.getTempCByIndex(0);
-  // doc["temp"] = Temp;
+  //change status
+  status["Temp"] = Temp;
 }
 
 void printTemp(){

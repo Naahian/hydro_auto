@@ -4,14 +4,14 @@
 #define PH_SCALE -3.0 // Voltage change per pH unit (approximation)
 
 float phVoltage;
-float pH; 
 
 void readPH() {
   int rawValue = analogRead(PH_PIN); // Read sensor voltage
   phVoltage = rawValue * (VREF / ADC_RESOLUTION);
   pH = 7.0 + ((PH_NEUTRAL_VOLTAGE - phVoltage) / PH_SCALE); // Calculate pH
 
-  // doc["ph"] = pH;
+  //change status
+  status["PH"] = pH;
 }
  
 

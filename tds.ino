@@ -5,7 +5,7 @@ int analogBufferTemp[SCOUNT];
 int analogBufferIndex = 0;
 int copyIndex = 0;
 float averageVoltage = 0;
-float tdsValue = 0;
+
        // current Temp for compensation
 
 void setupTDS(){
@@ -38,23 +38,22 @@ void readTDS(){
       float compensationVoltage=averageVoltage/compensationCoefficient;
       
       //convert voltage value to tds value
-      tdsValue=(133.42*compensationVoltage*compensationVoltage*compensationVoltage - 255.86*compensationVoltage*compensationVoltage + 857.39*compensationVoltage)*0.5;
+      tds=(133.42*compensationVoltage*compensationVoltage*compensationVoltage - 255.86*compensationVoltage*compensationVoltage + 857.39*compensationVoltage)*0.5;
       
-      // doc["tds"] = tdsValue;
-      
-  
+      //change status
+      status["EC"] = tds; 
     }
   }
 }
 
 //TDS = k*EC  //k = tds factor, varies from 0.5 to 0.8
 float getEC(){
-  return tdsValue/0.67;
+  return tds/0.67;
 }
 
 void printTDS(){
   Serial.print("TDS Value:");
-  Serial.print(tdsValue,0);
+  Serial.print(tds,0);
   Serial.println("ppm");
   Serial.print("EC Value:");
   Serial.print(getEC(), 0);

@@ -11,8 +11,8 @@ void createConfig(){
   config["type"] = "leafy";  //leafy, fruit, vegitable
   config["state"] = "initial"; //initial, growth
   config["temp"] = 25.0;
-  config["tds"] = 0.0;
-  config["ph"] = 0.0;
+  config["tds"] = 1.0;
+  config["ph"] = 6.5;
   config["startDosing"] = false;
 
   String json;
